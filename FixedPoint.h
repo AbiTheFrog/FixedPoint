@@ -13,18 +13,18 @@
 #ifndef FixedPointLib
 #define FixedPointLib
 
-#define SCALE_FACTOR (bits * point)
+#define SCALE_FACTOR (1 << point)
 
 /**
  *  Generic Fixed Point
  *      Used for generating fixed point types that can later be used
- *      @tparam bits number of bits for base type 'value'
+ *      @tparam bits number of bits for base type 'value' (must be <= to number of bits in expand type)
  *      @tparam point number of bits in point (must be less than bits)
  *      @tparam expand is used as the type when doing operations to prevent overflows (default long)
 **/
-template<unsigned char bits, unsigned char point, typename expand = long>
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 struct GenericFixedPoint {
-    long value : bits;
+    expand value : bits;
 
     /**
      *  Default Constructor
@@ -36,7 +36,7 @@ struct GenericFixedPoint {
      *  Copy Constructor
      *      @param n a fixed point number of THE SAME TYPE (template-wise)
     **/
-    GenericFixedPoint(const GenericFixedPoint<bits, point> n){
+    GenericFixedPoint(const GenericFixedPoint<bits, point>& n){
         value = n.value;
     }
 
@@ -51,20 +51,11 @@ struct GenericFixedPoint {
     /**
      *  Integer Type Constructors
      *      ! May cause type problems
+     *      ! Can overflow
     **/
-    GenericFixedPoint(char n){
+    GenericFixedPoint(integer n){
         value = n;
-        value << point;
-    }
-
-    GenericFixedPoint(int n){
-        value = n;
-        value << point;
-    }
-
-    GenericFixedPoint(long n){
-        value = n;
-        value << point;
+        value <<= point;
     }
 
     /**
@@ -131,12 +122,23 @@ struct GenericFixedPoint {
         return value <= n.value;
     }
 
-    bool operator >(const GenericFixedPoint<bits, point> n){
+    bool operator >=(const GenericFixedPoint<bits, point> n){
         return value >= n.value;
     }
 
     bool operator ==(const GenericFixedPoint<bits, point> n){
         return value == n.value;
+    }
+
+    /**
+     *  Conversions
+    **/
+    operator float(){
+        return (float)value / SCALE_FACTOR;
+    }
+
+    operator integer(){
+        return (integer)(value / SCALE_FACTOR);
     }
 };
 
