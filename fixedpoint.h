@@ -51,9 +51,7 @@ struct GenericFixedPoint {
      *  Floating Point Constructor
      *      @param n floating point number to convert
     **/
-    GenericFixedPoint(float n){
-        value = n * SCALE_FACTOR;
-    }
+    constexpr GenericFixedPoint(float n) : value(n * SCALE_FACTOR) {}
 
     /**
      *  Integer Type Constructors
