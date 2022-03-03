@@ -22,6 +22,7 @@
  *      @tparam bits number of bits for base type 'value' (must be <= to number of bits in expand type)
  *      @tparam point number of bits in point (must be less than bits)
  *      @tparam expand is used as the type when doing operations to prevent overflows (default long)
+ *      @tparam integer defines the type used in all integer operations and conversions
 **/
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 struct GenericFixedPoint {
