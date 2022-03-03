@@ -4,6 +4,8 @@ A fixed point c++ library
 Designed for use with the TI84 calculator
   * can be used with other platforms without issue
 
+---
+
 Usage
  
  - Import header file
@@ -30,6 +32,27 @@ int main() {
     return 0;
 }
 ```
+
+---
+
+Math header
+
+ - abs
+   - defines the absolute value function for fixed point numbers
+ 
+ - sin_domain
+   - defines sin function for domain of [0, tau]
+ 
+ - cos_domain
+   - defines cos function for domain [0, tau]
+ 
+ - sin
+   - defines sin for any domain
+ 
+ - cos
+   - defines cos for any domain
+
+---
 
 TI84 Calculator Specific Instructions
  - meant for use with 3d game engine rendering (for performance boost compared to using floats)
