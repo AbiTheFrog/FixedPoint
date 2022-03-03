@@ -45,7 +45,7 @@ struct GenericFixedPoint {
      *      @param n floating point number to convert
     **/
     GenericFixedPoint(float n){
-        value = n * SCALE_FACTOR;
+        value = n << point;
     }
 
     /**
@@ -76,7 +76,7 @@ struct GenericFixedPoint {
 
     GenericFixedPoint<bits, point> operator *(const GenericFixedPoint<bits, point> n) const {
         GenericFixedPoint<bits, point> ret;
-        ret.value = ((expand)value * n.value) / (1 << point);
+        ret.value = ((expand)value * n.value) / SCALE_FACTOR;
         return ret;
     }
 
@@ -97,7 +97,7 @@ struct GenericFixedPoint {
     }
 
     GenericFixedPoint<bits, point>& operator *=(const GenericFixedPoint<bits, point> n){
-        value = ((expand)value * n.value) / (1 << point);
+        value = ((expand)value * n.value) / SCALE_FACTOR;
         return *this;
     }
 
@@ -139,6 +139,53 @@ struct GenericFixedPoint {
 
     operator integer(){
         return (integer)(value / SCALE_FACTOR);
+    }
+
+    /**
+     *  Integer operations on fixed point numbers
+    **/
+    GenericFixedPoint<bits, point> operator +(integer n){
+        GenericFixedPoint<bits, point> ret;
+        ret.value = value + (n << point);
+        return ret;
+    }
+
+    GenericFixedPoint<bits, point> operator -(integer n){
+        GenericFixedPoint<bits, point> ret;
+        ret.value = value - (n << point);
+        return ret;
+    }
+    
+    GenericFixedPoint<bits, point> operator *(integer n){
+        GenericFixedPoint<bits, point> ret;
+        ret.value = value * n;  // ((extend)value * (n * SCALE_FACTOR)) / SCALE_FACTOR;
+        return ret;
+    }
+
+    GenericFixedPoint<bits, point> operator /(integer n){
+        GenericFixedPoint<bits, point> ret;
+        ret.value = value / n; // ((extend)value * SCALE_FACTOR) / (n * SCALE_FACTOR);
+        return ret;
+    }
+
+    GenericFixedPoint<bits, point>& operator +=(integer n){
+        value += n << point;
+        return *this;
+    }
+
+    GenericFixedPoint<bits, point>& operator -=(integer n){
+        value += n << point;
+        return *this;
+    }
+
+    GenericFixedPoint<bits, point>& operator *=(integer n){
+        value *= n;
+        return *this;
+    }
+
+    GenericFixedPoint<bits, point>& operator /=(integer n){
+        value /= n;
+        return *this;
     }
 };
 
