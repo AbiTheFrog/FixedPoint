@@ -13,6 +13,104 @@
 #ifndef FixedPointMathLib
 #define FixedPointMathLib
 
+#include "fixedpoint.h"
 
+#define FixedType GenericFixedPoint<bits, point, expand, integer>
+
+/**
+ *  Absolute value function
+ *      @param x GenericFixedPoint<> value
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+FixedType abs(FixedType x){
+    x.value = (x.value < 0) ? -x.value : x.value;
+    return x;
+}
+
+/**
+ *  Sine function
+ *      @param x radian angle in the domain [0, tau]
+ *      ! limited accuracy
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+FixedType sin_domain(FixedType x){
+    constexpr FixedType pi = 3.141592f;
+    constexpr FixedType hpi = 3.141592f / 2;
+
+    x -= hpi;
+
+    bool neg = false;
+    if(x > pi){
+        neg = true;
+        x -= pi;
+    }
+
+    const FixedType x2 = x * x;
+    const FixedType x4 = x2 * x2;
+
+    x = 1 - (x2 / 2) + (x4 / 24) - (x4 * x2) / 720;
+
+    return neg ? -x : x;
+}
+
+
+/**
+ *  Cosine function
+ *      @param x radian angle in the domain [0, tau]
+ *      ! limited accuracy
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+FixedType cos_domain(FixedType x){
+    constexpr FixedType pi = 3.141592f;
+
+    bool neg = false;
+    if(x > pi){
+        neg = true;
+        x -= pi;
+    }
+
+    const FixedType x2 = x * x;
+    const FixedType x4 = x2 * x2;
+
+    x = 1 - (x2 / 2) + (x4 / 24) - (x4 * x2) / 720;
+
+    return neg ? -x : x;
+}
+
+/**
+ *  Unrestricted sine function
+ *      @param x radian angle (no domain restriction)
+ *      ! limited accuracy
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+FixedType sin(FixedType x){
+    constexpr FixedType tau = 3.141592f * 2;
+    if(x > tau){
+        x.value %= tau.value;
+    } else if(x < 0){
+        x.value = tau.value - (-x.value % tau.value);
+    }
+    
+    return sin_domain(x);
+}
+
+/**
+ *  Unrestricted cosine function
+ *      @param x radian angle (no domain restriction)
+ *      ! limited accuracy
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+FixedType cos(FixedType x){
+    constexpr FixedType tau = 3.141592f * 2;
+    if(x > tau){
+        x.value %= tau.value;
+    } else if(x < 0){
+        x.value = tau.value - (-x.value % tau.value);
+    }
+    
+    return cos_domain(x);
+}
+
+#undef FixedType
 
 #endif
