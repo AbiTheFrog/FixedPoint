@@ -31,6 +31,7 @@ FixedType abs(FixedType x){
  *  Sine function
  *      @param x radian angle in the domain [0, tau]
  *      ! limited accuracy
+ *      Based of tailor series for cos (consider faster methods)
 **/
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType sin_domain(FixedType x){
@@ -39,12 +40,14 @@ FixedType sin_domain(FixedType x){
 
     x -= hpi;
 
+    // confine between [0, pi]
     bool neg = false;
     if(x > pi){
         neg = true;
         x -= pi;
     }
 
+    // evaluate cos tailor serios (good between -tau / 4 to tau / 4, or 0 - pi with shift)
     const FixedType x2 = x * x;
     const FixedType x4 = x2 * x2;
 
@@ -58,6 +61,8 @@ FixedType sin_domain(FixedType x){
  *  Cosine function
  *      @param x radian angle in the domain [0, tau]
  *      ! limited accuracy
+ *      Based of tailor series for cos (consider faster methods)
+ *      Presently almost the same as sin_domain
 **/
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType cos_domain(FixedType x){
@@ -85,6 +90,8 @@ FixedType cos_domain(FixedType x){
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType sin(FixedType x){
     constexpr FixedType tau = 3.141592f * 2;
+    
+    // trim between [0, tau]
     if(x > tau){
         x.value %= tau.value;
     } else if(x < 0){
@@ -102,6 +109,8 @@ FixedType sin(FixedType x){
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType cos(FixedType x){
     constexpr FixedType tau = 3.141592f * 2;
+
+    // trim between [0, tau]
     if(x > tau){
         x.value %= tau.value;
     } else if(x < 0){
