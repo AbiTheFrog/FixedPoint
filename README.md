@@ -18,7 +18,7 @@ Usage
 ```
 // prints 'Value: 0.953125'
 
-#include "fixed.h"
+#include "fixedpoint.h"
 #include <stdio.h>
 
 typedef GenericFixedPoint<24, 6> fixed;
