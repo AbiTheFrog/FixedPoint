@@ -27,6 +27,11 @@ struct GenericFixedPoint {
     expand value : bits;
 
     /**
+     *  Improves code readability
+    **/
+    typedef GenericFixedPoint<bits, point, expand, integer> FixedType;
+
+    /**
      *  Default Constructor
      *      ! Leaves value uninitialized
     **/
@@ -36,7 +41,7 @@ struct GenericFixedPoint {
      *  Copy Constructor
      *      @param n a fixed point number of THE SAME TYPE (template-wise)
     **/
-    GenericFixedPoint(const GenericFixedPoint<bits, point, expand, integer>& n){
+    GenericFixedPoint(const FixedType& n){
         value = n.value;
     }
 
@@ -62,46 +67,46 @@ struct GenericFixedPoint {
      *  Fixed <-> Fixed -> Fixed Operations
      *      ! only works on fixed point operations with the same type
     **/
-    GenericFixedPoint<bits, point, expand, integer> operator +(const GenericFixedPoint<bits, point, expand, integer> n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator +(const FixedType n) const {
+        FixedType ret;
         ret.value = value + n.value;
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer> operator -(const GenericFixedPoint<bits, point, expand, integer> n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator -(const FixedType n) const {
+        FixedType ret;
         ret.value = value - n.value;
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer> operator *(const GenericFixedPoint<bits, point, expand, integer> n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator *(const FixedType n) const {
+        FixedType ret;
         ret.value = ((expand)value * n.value) / SCALE_FACTOR;
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer> operator /(const GenericFixedPoint<bits, point, expand, integer> n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator /(const FixedType n) const {
+        FixedType ret;
         ret.value = ((expand)value << point) / n.value;
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator +=(const GenericFixedPoint<bits, point, expand, integer> n) {
+    FixedType& operator +=(const FixedType n) {
         value += n.value;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator -=(const GenericFixedPoint<bits, point, expand, integer> n) {
+    FixedType& operator -=(const FixedType n) {
         value -= n.value;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator *=(const GenericFixedPoint<bits, point, expand, integer> n){
+    FixedType& operator *=(const FixedType n){
         value = ((expand)value * n.value) / SCALE_FACTOR;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator /=(const GenericFixedPoint<bits, point, expand, integer> n){
+    FixedType& operator /=(const FixedType n){
         value = ((expand)value << point) / n.value;
         return *this;
     }
@@ -110,23 +115,23 @@ struct GenericFixedPoint {
      *  Fixed <-> Fixed -> Boolean Operations
      *      ! only works on fixed point operations with the same type
     **/
-    bool operator <(const GenericFixedPoint<bits, point, expand, integer> n) const {
+    bool operator <(const FixedType n) const {
         return value < n.value;
     }
 
-    bool operator >(const GenericFixedPoint<bits, point, expand, integer> n) const {
+    bool operator >(const FixedType n) const {
         return value > n.value;
     }
 
-    bool operator <=(const GenericFixedPoint<bits, point, expand, integer> n) const {
+    bool operator <=(const FixedType n) const {
         return value <= n.value;
     }
 
-    bool operator >=(const GenericFixedPoint<bits, point, expand, integer> n) const {
+    bool operator >=(const FixedType n) const {
         return value >= n.value;
     }
 
-    bool operator ==(const GenericFixedPoint<bits, point, expand, integer> n) const {
+    bool operator ==(const FixedType n) const {
         return value == n.value;
     }
 
@@ -144,46 +149,46 @@ struct GenericFixedPoint {
     /**
      *  Integer operations on fixed point numbers
     **/
-    GenericFixedPoint<bits, point, expand, integer> operator +(integer n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator +(integer n) const {
+        FixedType ret;
         ret.value = value + (n << point);
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer> operator -(integer n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator -(integer n) const {
+        FixedType ret;
         ret.value = value - (n << point);
         return ret;
     }
     
-    GenericFixedPoint<bits, point, expand, integer> operator *(integer n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator *(integer n) const {
+        FixedType ret;
         ret.value = value * n;  // ((extend)value * (n * SCALE_FACTOR)) / SCALE_FACTOR;
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer> operator /(integer n) const {
-        GenericFixedPoint<bits, point, expand, integer> ret;
+    FixedType operator /(integer n) const {
+        FixedType ret;
         ret.value = value / n; // ((extend)value * SCALE_FACTOR) / (n * SCALE_FACTOR);
         return ret;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator +=(integer n){
+    FixedType& operator +=(integer n){
         value += n << point;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator -=(integer n){
+    FixedType& operator -=(integer n){
         value += n << point;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator *=(integer n){
+    FixedType& operator *=(integer n){
         value *= n;
         return *this;
     }
 
-    GenericFixedPoint<bits, point, expand, integer>& operator /=(integer n){
+    FixedType& operator /=(integer n){
         value /= n;
         return *this;
     }
