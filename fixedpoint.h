@@ -138,6 +138,15 @@ struct GenericFixedPoint {
     }
 
     /**
+     *  Negation Fixed -> Fixed
+     **/
+    FixedType operator -() const {
+        FixedType ret;
+        ret.value = -value;
+        return ret;
+    }
+
+    /**
      *  Conversions
     **/
     operator float() const {
