@@ -1,5 +1,5 @@
 /**
- *  Fixed Point Math Library
+ *  Fixed Point Library
  *      Made by Abi The Frog
  *      Designed for use with TI84 calculators
  *          - ideally 24 bit value with 6 bits below point <24, 6>
