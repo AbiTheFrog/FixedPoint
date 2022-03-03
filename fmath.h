@@ -56,7 +56,6 @@ FixedType sin_domain(FixedType x){
     return neg ? -x : x;
 }
 
-
 /**
  *  Cosine function
  *      @param x radian angle in the domain [0, tau]
