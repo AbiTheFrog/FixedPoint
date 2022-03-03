@@ -198,6 +198,64 @@ struct GenericFixedPoint {
  *  Integer <-> Fixed -> Fixed Operations
  *      TODO: write as friends
 **/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator +(integer n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = (n << point) + f.value;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator -(integer n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = (n << point) - f.value;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator *(integer n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = f.value * n;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator /(integer n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = ((expand)n << (point * 2)) / f.value;
+    return ret;
+}
+
+/**
+ *  Float <-> Fixed -> Fixed
+**/
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator +(float n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = n * SCALE_FACTOR + f.value;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator -(float n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = n * SCALE_FACTOR - f.value;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator *(float n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = f.value * n;
+    return ret;
+}
+
+template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
+GenericFixedPoint<bits, point, expand, integer> operator /(float n, const GenericFixedPoint<bits, point, expand, integer> f){
+    GenericFixedPoint<bits, point, expand, integer> ret;
+    ret.value = (n / f.value) * SCALE_FACTOR * SCALE_FACTOR;
+    return ret;
+}
 
 #undef SCALE_FACTOR
 
