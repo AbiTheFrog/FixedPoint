@@ -193,24 +193,91 @@ struct GenericFixedPoint {
         return *this;
     }
 
-    bool operator <(integer n){
+    bool operator <(integer n) const {
         return value < ((expand)n << point);
     }
 
-    bool operator >(integer n){
+    bool operator >(integer n) const {
         return value > ((expand)n << point);
     }
 
-    bool operator <=(integer n){
+    bool operator <=(integer n) const {
         return value <= ((expand)n << point);
     }
 
-    bool operator >=(integer n){
+    bool operator >=(integer n) const {
         return value >= ((expand)n << point);
     }
 
-    bool operator ==(integer n){
+    bool operator ==(integer n) const {
         return value == ((expand)n << point);
+    }
+
+    /**
+     *  Floating point operations
+    **/
+    FixedType operator +(float n) const {
+        FixedType ret;
+        ret.value = value + n * SCALE_FACTOR;
+        return ret;
+    }
+
+    FixedType operator -(float n) const {
+        FixedType ret;
+        ret.value = value - n * SCALE_FACTOR;
+        return ret;
+    }
+
+    FixedType operator *(float n) const {
+        FixedType ret;
+        ret.value = value * n;
+        return ret;
+    }
+
+    FixedType operator /(float n) const {
+        FixedType ret;
+        ret.value = value / n;
+        return ret;
+    }
+
+    FixedType& operator +=(float n){
+        value += n * SCALE_FACTOR;
+        return *this;
+    }
+
+    FixedType& operator -=(float n){
+        value -= n * SCALE_FACTOR;
+        return *this;
+    }
+
+    FixedType& operator *=(float n){
+        value *= n;
+        return *this;
+    }
+
+    FixedType& operator /=(float n){
+        value /= n;
+        return *this;
+    }
+
+    bool operator <(float n) const {
+        return value < n * SCALE_FACTOR;
+    }
+
+    bool operator >(float n) const {
+        return value > n * SCALE_FACTOR;
+    }
+
+    bool operator <=(float n) const {
+        return value <= n * SCALE_FACTOR;
+    }
+
+    bool operator >=(float n) const {
+        return value >= n * SCALE_FACTOR;
+    }
+
+    bool operator ==(float n) const {
+        return value == n * SCALE_FACTOR;
     }
 };
 
@@ -218,7 +285,6 @@ struct GenericFixedPoint {
 
 /**
  *  Integer <-> Fixed -> Fixed Operations
- *      TODO: write as friends
 **/
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType operator +(integer n, const FixedType f){
