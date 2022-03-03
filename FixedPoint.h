@@ -6,6 +6,7 @@
  *          - should work on other platforms and with different bit layouts
  *      Change log  (d/m/y)
  *          Initial Code 2/3/2022
+ *          Version 1.0 3/3/2022
 **/
 
 #pragma once
