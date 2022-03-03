@@ -151,13 +151,13 @@ struct GenericFixedPoint {
     **/
     FixedType operator +(integer n) const {
         FixedType ret;
-        ret.value = value + (n << point);
+        ret.value = value + ((expand)n << point);
         return ret;
     }
 
     FixedType operator -(integer n) const {
         FixedType ret;
-        ret.value = value - (n << point);
+        ret.value = value - ((expand)n << point);
         return ret;
     }
     
@@ -174,12 +174,12 @@ struct GenericFixedPoint {
     }
 
     FixedType& operator +=(integer n){
-        value += n << point;
+        value += (expand)n << point;
         return *this;
     }
 
     FixedType& operator -=(integer n){
-        value += n << point;
+        value += (expand)n << point;
         return *this;
     }
 
@@ -192,6 +192,26 @@ struct GenericFixedPoint {
         value /= n;
         return *this;
     }
+
+    bool operator <(integer n){
+        return value < ((expand)n << point);
+    }
+
+    bool operator >(integer n){
+        return value > ((expand)n << point);
+    }
+
+    bool operator <=(integer n){
+        return value <= ((expand)n << point);
+    }
+
+    bool operator >=(integer n){
+        return value >= ((expand)n << point);
+    }
+
+    bool operator ==(integer n){
+        return value == ((expand)n << point);
+    }
 };
 
 #define FixedType GenericFixedPoint<bits, point, expand, integer>
@@ -203,14 +223,14 @@ struct GenericFixedPoint {
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType operator +(integer n, const FixedType f){
     FixedType ret;
-    ret.value = (n << point) + f.value;
+    ret.value = ((expand)n << point) + f.value;
     return ret;
 }
 
 template<unsigned char bits, unsigned char point, typename expand = long, typename integer = int>
 FixedType operator -(integer n, const FixedType f){
     FixedType ret;
-    ret.value = (n << point) - f.value;
+    ret.value = ((expand)n << point) - f.value;
     return ret;
 }
 
