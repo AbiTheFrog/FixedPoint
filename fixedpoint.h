@@ -43,9 +43,7 @@ struct GenericFixedPoint {
      *  Copy Constructor
      *      @param n a fixed point number of THE SAME TYPE (template-wise)
     **/
-    GenericFixedPoint(const FixedType& n){
-        value = n.value;
-    }
+    constexpr GenericFixedPoint(const FixedType& n) : value(n.value) {}
 
     /**
      *  Floating Point Constructor
@@ -62,7 +60,7 @@ struct GenericFixedPoint {
         value = n;
         value <<= point;
     }
-
+    
     /**
      *  Fixed <-> Fixed -> Fixed Operations
      *      ! only works on fixed point operations with the same type
